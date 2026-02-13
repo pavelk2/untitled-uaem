@@ -21,6 +21,9 @@ export function FormBuilderPage() {
   const dispatch = useAppDispatch()
   const forms = useAppSelector((state) => state.forms.forms)
   const currentForm = useAppSelector((state) => state.forms.currentForm)
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+
+  const backPath = isAuthenticated ? '/dashboard' : '/'
 
   useEffect(() => {
     const form = forms.find((f) => f.id === id) ?? null
@@ -35,8 +38,8 @@ export function FormBuilderPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <p className="text-neutral-500">Form not found</p>
-        <Button variant="secondary" onClick={() => navigate('/dashboard')}>
-          Back to Dashboard
+        <Button variant="secondary" onClick={() => navigate(backPath)}>
+          Go Back
         </Button>
       </div>
     )
@@ -83,9 +86,9 @@ export function FormBuilderPage() {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate(backPath)}
               className="w-8 h-8 flex items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors"
-              aria-label="Back to dashboard"
+              aria-label="Go back"
             >
               <svg
                 width="20"

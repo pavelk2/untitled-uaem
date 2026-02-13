@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAppSelector } from '@/store'
+import { LandingPage } from '@/modules/landing/LandingPage'
 import { LoginPage } from '@/modules/auth/LoginPage'
 import { SignupPage } from '@/modules/auth/SignupPage'
 import { DashboardLayout } from '@/modules/dashboard/DashboardLayout'
@@ -28,7 +29,17 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public routes */}
+        {/* Landing page */}
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <LandingPage />
+            </PublicRoute>
+          }
+        />
+
+        {/* Auth routes */}
         <Route
           path="/login"
           element={
@@ -58,27 +69,12 @@ export function App() {
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
-        {/* Protected routes without sidebar (full-screen) */}
-        <Route
-          path="/forms/:id/edit"
-          element={
-            <ProtectedRoute>
-              <FormBuilderPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/forms/:id/preview"
-          element={
-            <ProtectedRoute>
-              <FormPreviewPage />
-            </ProtectedRoute>
-          }
-        />
+        {/* Form builder & preview - accessible without login */}
+        <Route path="/forms/:id/edit" element={<FormBuilderPage />} />
+        <Route path="/forms/:id/preview" element={<FormPreviewPage />} />
 
-        {/* Redirect */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   )
